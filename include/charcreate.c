@@ -59,8 +59,9 @@ void charcreate_capitalizeplayername(player_t* player) {
 }
 
 void charcreate_handle(GameContext* ctx) {
-  DrawRectangle(0, 0, (int)ctx->setting.resolution.x, (int)ctx->setting.resolution.y,
-                CLITERAL(Color){15, 59, 58, 255});
+  DrawRectangle(
+      0, 0, (int)ctx->setting.resolution.x, (int)ctx->setting.resolution.y,
+      CLITERAL(Color){15, 59, 58, 255});
   charcreate_printdebuginfo(ctx);
   switch (ccstep) {
   case 0:
@@ -81,24 +82,26 @@ void charcreate_handle(GameContext* ctx) {
       }
       name[letter_count] = '\0';
     }
-    DrawRectangle((int)(ctx->setting.resolution.x / 2.0f) - 100,
-                  (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 90,
-                  CLITERAL(Color){0, 0, 0, 50});
-    Rectangle textbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                         (ctx->setting.resolution.y / 2.0f) - 90, 180, 30};
-    Rectangle nameconfirmbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                                (ctx->setting.resolution.y / 2.0f) - 50, 180, 30};
+    DrawRectangle(
+        (int)(ctx->setting.resolution.x / 2.0f) - 100,
+        (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 90, CLITERAL(Color){0, 0, 0, 50});
+    Rectangle textbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 90, 180, 30};
+    Rectangle nameconfirmbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 50, 180, 30};
     DrawRectangleRec(textbox, LIGHTGRAY);
-    DrawRectangleLines((int)textbox.x, (int)textbox.y, (int)textbox.width, (int)textbox.height,
-                       BLACK);
+    DrawRectangleLines(
+        (int)textbox.x, (int)textbox.y, (int)textbox.width, (int)textbox.height, BLACK);
     DrawText(name, (int)textbox.x + 5, (int)textbox.y + 5, 20, BLACK);
-    DrawText("Enter name:",
-             (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("Enter name:", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
+    DrawText(
+        "Enter name:",
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("Enter name:", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
     DrawRectangleRec(nameconfirmbox, DARKGRAY);
-    DrawText("CONFIRM",
-             (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) - 45, 20, WHITE);
+    DrawText(
+        "CONFIRM",
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) - 45, 20, WHITE);
     if (CheckCollisionPointRec(GetMousePosition(), nameconfirmbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 0) {
       if (name[0] == '\0') {
@@ -113,39 +116,42 @@ void charcreate_handle(GameContext* ctx) {
     break;
   case 1:
     // Gender
-    DrawRectangle((int)(ctx->setting.resolution.x / 2.0f) - 100,
-                  (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 140,
-                  CLITERAL(Color){0, 0, 0, 50});
-    DrawText(TextFormat("Choose gender:", letter_count),
-             (int)(ctx->setting.resolution.x / 2.0f) -
-                 (int)(MeasureText("Choose gender:", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
-    Rectangle genderconfirmbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                                  ctx->setting.resolution.y / 2.0f, 180, 30};
+    DrawRectangle(
+        (int)(ctx->setting.resolution.x / 2.0f) - 100,
+        (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 140, CLITERAL(Color){0, 0, 0, 50});
+    DrawText(
+        TextFormat("Choose gender:", letter_count),
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("Choose gender:", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
+    Rectangle genderconfirmbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, ctx->setting.resolution.y / 2.0f, 180, 30};
     DrawRectangleRec(genderconfirmbox, DARKGRAY);
-    DrawText("CONFIRM",
-             (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) + 5, 20, WHITE);
+    DrawText(
+        "CONFIRM",
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) + 5, 20, WHITE);
 
-    Rectangle mbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                      (ctx->setting.resolution.y / 2.0f) - 90, 85, 80};
+    Rectangle mbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 90, 85, 80};
     if (ctx->player.gender == 'M') {
       DrawRectangleRec(mbox, CLITERAL(Color){0, 0, 0, 50});
     } else {
       DrawRectangleRec(mbox, CLITERAL(Color){255, 255, 255, 50});
     }
-    DrawText(TextFormat("M", 1), (int)(ctx->setting.resolution.x / 2.0f) - 55,
-             (int)(ctx->setting.resolution.y / 2.0f) - 60, 20, WHITE);
+    DrawText(
+        TextFormat("M", 1), (int)(ctx->setting.resolution.x / 2.0f) - 55,
+        (int)(ctx->setting.resolution.y / 2.0f) - 60, 20, WHITE);
 
-    Rectangle fbox = {(ctx->setting.resolution.x / 2.0f) + 5,
-                      (ctx->setting.resolution.y / 2.0f) - 90, 85, 80};
+    Rectangle fbox = {
+        (ctx->setting.resolution.x / 2.0f) + 5, (ctx->setting.resolution.y / 2.0f) - 90, 85, 80};
     if (ctx->player.gender == 'F') {
       DrawRectangleRec(fbox, CLITERAL(Color){0, 0, 0, 50});
     } else {
       DrawRectangleRec(fbox, CLITERAL(Color){255, 255, 255, 50});
     }
-    DrawText(TextFormat("F", 1), (int)(ctx->setting.resolution.x / 2.0f) + 45,
-             (int)(ctx->setting.resolution.y / 2.0f) - 60, 20, WHITE);
+    DrawText(
+        TextFormat("F", 1), (int)(ctx->setting.resolution.x / 2.0f) + 45,
+        (int)(ctx->setting.resolution.y / 2.0f) - 60, 20, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), mbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 1) {
@@ -164,32 +170,33 @@ void charcreate_handle(GameContext* ctx) {
     break;
   case 2:
     // Race
-    DrawRectangle((int)(ctx->setting.resolution.x / 2.0f) - 100,
-                  (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 290,
-                  CLITERAL(Color){0, 0, 0, 50});
-    DrawText(TextFormat("Choose race:", letter_count),
-             (int)(ctx->setting.resolution.x / 2.0f) -
-                 (int)(MeasureText("Choose race:", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
+    DrawRectangle(
+        (int)(ctx->setting.resolution.x / 2.0f) - 100,
+        (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 290, CLITERAL(Color){0, 0, 0, 50});
+    DrawText(
+        TextFormat("Choose race:", letter_count),
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("Choose race:", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
 
-    Rectangle alfbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                        (ctx->setting.resolution.y / 2.0f) - 90, 180, 60};
+    Rectangle alfbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 90, 180, 60};
     charcreate_drawbox(alfbox, "Alf", !strcmp(ctx->player.race.race_id, "Alf"));
 
-    Rectangle mungbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                         (ctx->setting.resolution.y / 2.0f) - 20, 180, 60};
+    Rectangle mungbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 20, 180, 60};
     charcreate_drawbox(mungbox, "Mung", !strcmp(ctx->player.race.race_id, "Mung"));
 
-    Rectangle halfbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                         (ctx->setting.resolution.y / 2.0f) + 50, 180, 60};
+    Rectangle halfbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 50, 180, 60};
     charcreate_drawbox(halfbox, "Half", !strcmp(ctx->player.race.race_id, "Half"));
 
-    Rectangle raceconfirmbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                                (ctx->setting.resolution.y / 2.0f) + 150, 180, 30};
+    Rectangle raceconfirmbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 150, 180, 30};
     DrawRectangleRec(raceconfirmbox, DARKGRAY);
-    DrawText("CONFIRM",
-             (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) + 155, 20, WHITE);
+    DrawText(
+        "CONFIRM",
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) + 155, 20, WHITE);
     if (CheckCollisionPointRec(GetMousePosition(), alfbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 2) {
       race_selected = 1;
@@ -212,33 +219,34 @@ void charcreate_handle(GameContext* ctx) {
     break;
   case 3:
     // Role
-    DrawRectangle((int)(ctx->setting.resolution.x / 2.0f) - 100,
-                  (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 290,
-                  CLITERAL(Color){0, 0, 0, 50});
-    DrawText(TextFormat("Choose role:", letter_count),
-             (int)(ctx->setting.resolution.x / 2.0f) -
-                 (int)(MeasureText("Choose role:", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
+    DrawRectangle(
+        (int)(ctx->setting.resolution.x / 2.0f) - 100,
+        (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 290, CLITERAL(Color){0, 0, 0, 50});
+    DrawText(
+        TextFormat("Choose role:", letter_count),
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("Choose role:", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
 
-    Rectangle gruntbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                          (ctx->setting.resolution.y / 2.0f) - 90, 180, 60};
+    Rectangle gruntbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 90, 180, 60};
     charcreate_drawbox(gruntbox, "Grunt", !strcmp(ctx->player.role.role_id, "Grunt"));
 
-    Rectangle thaumaturgebox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                                (ctx->setting.resolution.y / 2.0f) - 20, 180, 60};
-    charcreate_drawbox(thaumaturgebox, "Thaumaturge",
-                       !strcmp(ctx->player.role.role_id, "Thaumaturge"));
+    Rectangle thaumaturgebox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 20, 180, 60};
+    charcreate_drawbox(
+        thaumaturgebox, "Thaumaturge", !strcmp(ctx->player.role.role_id, "Thaumaturge"));
 
-    Rectangle burglarbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                            (ctx->setting.resolution.y / 2.0f) + 50, 180, 60};
+    Rectangle burglarbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 50, 180, 60};
     charcreate_drawbox(burglarbox, "Burglar", !strcmp(ctx->player.role.role_id, "Burglar"));
 
-    Rectangle roleconfirmbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                                (ctx->setting.resolution.y / 2.0f) + 150, 180, 30};
+    Rectangle roleconfirmbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 150, 180, 30};
     DrawRectangleRec(roleconfirmbox, DARKGRAY);
-    DrawText("CONFIRM",
-             (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) + 155, 20, WHITE);
+    DrawText(
+        "CONFIRM",
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) + 155, 20, WHITE);
     if (CheckCollisionPointRec(GetMousePosition(), gruntbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 3) {
       role_selected = 1;
@@ -262,32 +270,34 @@ void charcreate_handle(GameContext* ctx) {
     break;
   case 4:
     // Background
-    DrawRectangle((int)(ctx->setting.resolution.x / 2.0f) - 100,
-                  (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 290,
-                  CLITERAL(Color){0, 0, 0, 50});
-    DrawText(TextFormat("Choose background:", letter_count),
-             (int)(ctx->setting.resolution.x / 2.0f) -
-                 (int)(MeasureText("Choose background:", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
+    DrawRectangle(
+        (int)(ctx->setting.resolution.x / 2.0f) - 100,
+        (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 290, CLITERAL(Color){0, 0, 0, 50});
+    DrawText(
+        TextFormat("Choose background:", letter_count),
+        (int)(ctx->setting.resolution.x / 2.0f) -
+            (int)(MeasureText("Choose background:", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
 
-    Rectangle bg1box = {(ctx->setting.resolution.x / 2.0f) - 90,
-                        (ctx->setting.resolution.y / 2.0f) - 90, 180, 60};
+    Rectangle bg1box = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 90, 180, 60};
     charcreate_drawbox(bg1box, "Bg1", !strcmp(ctx->player.background, "Bg1"));
 
-    Rectangle bg2box = {(ctx->setting.resolution.x / 2.0f) - 90,
-                        (ctx->setting.resolution.y / 2.0f) - 20, 180, 60};
+    Rectangle bg2box = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 20, 180, 60};
     charcreate_drawbox(bg2box, "Bg2", !strcmp(ctx->player.background, "Bg2"));
 
-    Rectangle bg3box = {(ctx->setting.resolution.x / 2.0f) - 90,
-                        (ctx->setting.resolution.y / 2.0f) + 50, 180, 60};
+    Rectangle bg3box = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 50, 180, 60};
     charcreate_drawbox(bg3box, "Bg3", !strcmp(ctx->player.background, "Bg3"));
 
-    Rectangle backgroundconfirmbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                                      (ctx->setting.resolution.y / 2.0f) + 150, 180, 30};
+    Rectangle backgroundconfirmbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 150, 180, 30};
     DrawRectangleRec(backgroundconfirmbox, DARKGRAY);
-    DrawText("CONFIRM",
-             (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) + 155, 20, WHITE);
+    DrawText(
+        "CONFIRM",
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) + 155, 20, WHITE);
     if (CheckCollisionPointRec(GetMousePosition(), bg1box) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 4) {
       background_selected = 1;
@@ -310,32 +320,33 @@ void charcreate_handle(GameContext* ctx) {
     break;
   case 5:
     // Layer
-    DrawRectangle((int)(ctx->setting.resolution.x / 2.0f) - 100,
-                  (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 290,
-                  CLITERAL(Color){0, 0, 0, 50});
-    DrawText(TextFormat("Choose layer:", letter_count),
-             (int)(ctx->setting.resolution.x / 2.0f) -
-                 (int)(MeasureText("Choose layer:", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
+    DrawRectangle(
+        (int)(ctx->setting.resolution.x / 2.0f) - 100,
+        (int)(ctx->setting.resolution.y / 2.0f) - 100, 200, 290, CLITERAL(Color){0, 0, 0, 50});
+    DrawText(
+        TextFormat("Choose layer:", letter_count),
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("Choose layer:", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) - 125, 20, WHITE);
 
-    Rectangle layer1box = {(ctx->setting.resolution.x / 2.0f) - 90,
-                           (ctx->setting.resolution.y / 2.0f) - 90, 180, 60};
+    Rectangle layer1box = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 90, 180, 60};
     charcreate_drawbox(layer1box, "Layer1", !strcmp(ctx->player.layer, "Layer1"));
 
-    Rectangle layer2box = {(ctx->setting.resolution.x / 2.0f) - 90,
-                           (ctx->setting.resolution.y / 2.0f) - 20, 180, 60};
+    Rectangle layer2box = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 20, 180, 60};
     charcreate_drawbox(layer2box, "Layer2", !strcmp(ctx->player.layer, "Layer2"));
 
-    Rectangle layer3box = {(ctx->setting.resolution.x / 2.0f) - 90,
-                           (ctx->setting.resolution.y / 2.0f) + 50, 180, 60};
+    Rectangle layer3box = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 50, 180, 60};
     charcreate_drawbox(layer3box, "Layer3", !strcmp(ctx->player.layer, "Layer3"));
 
-    Rectangle layerconfirmbox = {(ctx->setting.resolution.x / 2.0f) - 90,
-                                 (ctx->setting.resolution.y / 2.0f) + 150, 180, 30};
+    Rectangle layerconfirmbox = {
+        (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 150, 180, 30};
     DrawRectangleRec(layerconfirmbox, DARKGRAY);
-    DrawText("CONFIRM",
-             (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
-             (int)(ctx->setting.resolution.y / 2.0f) + 155, 20, WHITE);
+    DrawText(
+        "CONFIRM",
+        (int)(ctx->setting.resolution.x / 2.0f) - (int)(MeasureText("CONFIRM", 20) / 2.0f),
+        (int)(ctx->setting.resolution.y / 2.0f) + 155, 20, WHITE);
     if (CheckCollisionPointRec(GetMousePosition(), layer1box) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 5) {
       layer_selected = 1;
