@@ -6,7 +6,11 @@
 
 void charcreate_printdebuginfo(GameContext* ctx);
 
-void charcreate_drawbox(Rectangle box, const char* label, bool selected);
+void charcreate_drawbox(Rectangle box, GameContext* ctx, const char* label, bool selected);
+
+void charcreate_drawboxbackground(GameContext* ctx, char* title, int width, int height);
+
+void charcreate_drawconfirmbox(GameContext* ctx);
 
 void charcreate_capitalizeplayername(player_t* player);
 

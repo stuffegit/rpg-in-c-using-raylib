@@ -10,6 +10,7 @@ int main(void) {
   ctx.state = STATE_MAINMENU;
   SetConfigFlags(FLAG_WINDOW_HIGHDPI);
   InitWindow(ctx.setting.resolution.x, ctx.setting.resolution.y, "videogame playing for fun");
+  setting_fontinit(&ctx.setting);
   SetTargetFPS(144);
 
   if (!IsWindowReady()) {

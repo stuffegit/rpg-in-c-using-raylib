@@ -10,9 +10,11 @@ typedef struct iVec2 {
 
 typedef struct Settings {
   iVec2 resolution;
+  Font nfont;
 } Settings;
 
 void setting_init(Settings* setting);
+void setting_fontinit(Settings* setting);
 void setting_handle(Settings* setting);
 
 #endif // SETTING_H

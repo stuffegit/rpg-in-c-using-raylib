@@ -18,7 +18,7 @@ role_t role_select(int choice) {
     role.durability_bonus = 20;
     break;
   case 2:
-    strcpy(role.role_id, "Thaumaturge");
+    strcpy(role.role_id, "Theurgist");
     role.body_bonus = 30;
     role.dexterity_bonus = 10;
     role.layer_bonus = 0;
