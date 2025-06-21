@@ -3,12 +3,14 @@
 
 #include "race.h"
 #include "role.h"
+#include <raylib.h>
 
 #define PLAYER_MAXNAMELEN 15
 #define PLAYER_MAXIDLEN 4
 
 typedef struct {
   // System identifiers
+  Vector2 playerpos;
   int level;
   char name[PLAYER_MAXNAMELEN + 1];
   char gender;

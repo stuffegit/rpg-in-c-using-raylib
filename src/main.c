@@ -1,40 +1,16 @@
 #include "game.h"
-#include "mainmenu.h"
 #include "charcreate.h"
-#include "setting.h"
+#include <raylib.h>
 
 int main(void) {
   GameContext ctx = {0};
-  player_init(&ctx.player);
-  setting_init(&ctx.setting);
-  ctx.state = STATE_MAINMENU;
-  SetConfigFlags(FLAG_WINDOW_HIGHDPI);
-  InitWindow(ctx.setting.resolution.x, ctx.setting.resolution.y, "videogame playing for fun");
-  setting_fontinit(&ctx.setting);
-  SetTargetFPS(144);
+  game_init(&ctx);
 
-  if (!IsWindowReady()) {
-    ctx.state = STATE_EXIT; // Imagine using errorcodes
+  while (ctx.state != STATE_EXIT && !WindowShouldClose()) {
+    game_update(&ctx);
+    game_draw(&ctx);
   }
-  while (ctx.state != STATE_EXIT) {
-    switch (ctx.state) {
-    case STATE_MAINMENU:
-      mainmenu_handle(&ctx);
-      break;
-    case STATE_CHARCREATE:
-      charcreate_handle(&ctx);
-      break;
-    case STATE_GAME:
-      game_handle(&ctx);
-      break;
-    case STATE_SETTINGS:
-      setting_handle(&ctx.setting);
-      break;
-    }
-    BeginDrawing();
-    ClearBackground(BLACK);
-    EndDrawing();
-  }
+  game_exit(&ctx);
   CloseWindow();
   return 0;
 }

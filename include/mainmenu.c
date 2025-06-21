@@ -1,11 +1,10 @@
-#include "mainmenu.h"
-#include "setting.h"
+#include "game.h"
 #include <stdio.h>
 
 const char* menu_strings[3] = {"Start Game", "Config", "Quit"};
 Rectangle menu_item[3];
 
-void mainmenu_printdebuginfo(const GameContext* ctx) {
+void game_mainmenu_printdebuginfo(const GameContext* ctx) {
   switch (ctx->state) {
   case 0:
     DrawText("Gamestate: QUIT", (ctx->setting.resolution.x / 2) - 100, 0, 20, WHITE);
@@ -22,10 +21,11 @@ void mainmenu_printdebuginfo(const GameContext* ctx) {
   }
 }
 
-void mainmenu_handle(GameContext* ctx) {
+void game_mainmenu_handle(GameContext* ctx) {
   // Box containing items
-  DrawRectangle((ctx->setting.resolution.x - 200) / 2, (ctx->setting.resolution.y - 200) / 2, 200,
-                200, CLITERAL(Color){0, 117, 44, 255});
+  DrawRectangle(
+      (ctx->setting.resolution.x - 200) / 2, (ctx->setting.resolution.y - 200) / 2, 200, 200,
+      CLITERAL(Color){0, 117, 44, 255});
   // Fill rect with size/pos data
   for (int i = 0; i < 3; i++) {
     menu_item[i].x =

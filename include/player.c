@@ -1,8 +1,8 @@
 #include "player.h"
-#include "game.h"
 
 void player_init(player_t* player) {
   player->level = 0;
+  player->playerpos = (Vector2){0, 0};
 
   player->body = 0;
   player->dexterity = 0;

@@ -2,7 +2,7 @@
 #include "player.h"
 #include "role.h"
 #include "race.h"
-#include "setting.h"
+#include "game.h"
 #include <ctype.h>
 #include <string.h>
 
@@ -16,39 +16,39 @@ int role_selected = 0;
 int background_selected = 0;
 int layer_selected = 0;
 
-void charcreate_printdebuginfo(player_t player, Font nfont) {
-  DrawTextEx(nfont, TextFormat("Nam: %s", player.name), (Vector2){0, 1}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Gen: %c", player.gender), (Vector2){0, 31}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Rce: %s", player.race.race_id), (Vector2){0, 61}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Rol: %s", player.role.role_id), (Vector2){0, 91}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Bgd: %s", player.background), (Vector2){0, 121}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Lyr: %s", player.layer), (Vector2){0, 151}, 32, 1, WHITE);
+void charcreate_printdebuginfo(player_t* player, Font* nfont) {
+  DrawTextEx(*nfont, TextFormat("Nam: %s", player->name), (Vector2){0, 1}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Gen: %c", player->gender), (Vector2){0, 31}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Rce: %s", player->race.race_id), (Vector2){0, 61}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Rol: %s", player->role.role_id), (Vector2){0, 91}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Bgd: %s", player->background), (Vector2){0, 121}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Lyr: %s", player->layer), (Vector2){0, 151}, 32, 1, WHITE);
 
-  DrawTextEx(nfont, TextFormat("Bdy: %d", player.body), (Vector2){0, 181}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Dex: %d", player.dexterity), (Vector2){0, 211}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Ftg: %d", player.fatigue), (Vector2){0, 241}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Con: %d", player.connection), (Vector2){0, 271}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Bdy: %d", player->body), (Vector2){0, 181}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Dex: %d", player->dexterity), (Vector2){0, 211}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Ftg: %d", player->fatigue), (Vector2){0, 241}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Con: %d", player->connection), (Vector2){0, 271}, 32, 1, WHITE);
 
-  DrawTextEx(nfont, TextFormat("H|P: %d", player.hp), (Vector2){0, 301}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("M|P: %d", player.mp), (Vector2){0, 331}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Atk: %d", player.attack), (Vector2){0, 361}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Pwr: %d", player.power), (Vector2){0, 391}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Def: %d", player.defense), (Vector2){0, 421}, 32, 1, WHITE);
-  DrawTextEx(nfont, TextFormat("Dur: %d", player.durability), (Vector2){0, 451}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("H|P: %d", player->hp), (Vector2){0, 301}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("M|P: %d", player->mp), (Vector2){0, 331}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Atk: %d", player->attack), (Vector2){0, 361}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Pwr: %d", player->power), (Vector2){0, 391}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Def: %d", player->defense), (Vector2){0, 421}, 32, 1, WHITE);
+  DrawTextEx(*nfont, TextFormat("Dur: %d", player->durability), (Vector2){0, 451}, 32, 1, WHITE);
 }
 
-void charcreate_drawbox(Rectangle box, GameContext* ctx, const char* label, bool selected) {
-  const int fontSize = 32.0f;
+void charcreate_drawbox(Rectangle* box, GameContext* ctx, const char* label, bool selected) {
+  const float fontSize = 32.0f;
   const Color textColor = WHITE;
   const Color selectedColor = CLITERAL(Color){0, 0, 0, 50};
   const Color unselectedColor = CLITERAL(Color){255, 255, 255, 50};
 
-  DrawRectangleRec(box, selected ? selectedColor : unselectedColor);
+  DrawRectangleRec(*box, selected ? selectedColor : unselectedColor);
 
-  int textWidth = MeasureText(label, fontSize);
-  int textX = (int)(box.x + (box.width - textWidth) / 2);
-  int textY = (int)(box.y + (box.height - fontSize) / 2);
-  DrawTextEx(ctx->setting.nfont, label, (Vector2){textX, textY}, fontSize, 1, textColor);
+  Vector2 textsize = MeasureTextEx(ctx->setting.nfont, label, fontSize, 1.0f);
+  float textX = (box->x + (box->width - textsize.x) / 2.0f);
+  float textY = (box->y + (box->height - textsize.y) / 2.0f);
+  DrawTextEx(ctx->setting.nfont, label, (Vector2){textX, textY}, fontSize, 1.0f, textColor);
 }
 
 void charcreate_drawboxbackground(GameContext* ctx, char* title, int width, int height) {
@@ -66,15 +66,15 @@ void charcreate_drawboxbackground(GameContext* ctx, char* title, int width, int 
       (ctx->setting.resolution.y / 2.0f) - (height / 2.0f) - textsize.y};
 
   DrawTextEx(ctx->setting.nfont, title, textpos, fontsize, 1, WHITE);
-  charcreate_printdebuginfo(ctx->player, ctx->setting.nfont);
+  charcreate_printdebuginfo(&ctx->player, &ctx->setting.nfont);
 }
 
-void charcreate_drawconfirmbox(Rectangle box, GameContext* ctx) {
+void charcreate_drawconfirmbox(Rectangle* box, GameContext* ctx) {
   Vector2 confirmsize = MeasureTextEx(ctx->setting.nfont, "CONFIRM", 32.0f, 1.0f);
-  DrawRectangleRec(box, DARKGRAY);
+  DrawRectangleRec(*box, DARKGRAY);
   DrawTextEx(
       ctx->setting.nfont, "CONFIRM",
-      (Vector2){(ctx->setting.resolution.x / 2) - confirmsize.x / 2, box.y}, 32, 1, WHITE);
+      (Vector2){(ctx->setting.resolution.x / 2) - confirmsize.x / 2, box->y}, 32, 1, WHITE);
 }
 
 void charcreate_capitalizeplayername(player_t* player) {
@@ -113,7 +113,7 @@ void charcreate_handle(GameContext* ctx) {
 
     Rectangle nameconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 5, 180, 30};
-    charcreate_drawconfirmbox(nameconfirmbox, ctx);
+    charcreate_drawconfirmbox(&nameconfirmbox, ctx);
 
     DrawText(name, (int)textbox.x + 5, (int)textbox.y + 5, 20, BLACK);
     if (CheckCollisionPointRec(GetMousePosition(), nameconfirmbox) &&
@@ -133,7 +133,7 @@ void charcreate_handle(GameContext* ctx) {
     charcreate_drawboxbackground(ctx, "Choose gender:", 200, 140);
     Rectangle genderconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 30, 180, 30};
-    charcreate_drawconfirmbox(genderconfirmbox, ctx);
+    charcreate_drawconfirmbox(&genderconfirmbox, ctx);
 
     Rectangle mbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 60, 85, 80};
@@ -179,19 +179,19 @@ void charcreate_handle(GameContext* ctx) {
     charcreate_drawboxbackground(ctx, "Choose race:", 200, 290);
     Rectangle alfbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 135, 180, 60};
-    charcreate_drawbox(alfbox, ctx, "Alf", !strcmp(ctx->player.race.race_id, "Alf"));
+    charcreate_drawbox(&alfbox, ctx, "Alf", !strcmp(ctx->player.race.race_id, "Alf"));
 
     Rectangle mungbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 65, 180, 60};
-    charcreate_drawbox(mungbox, ctx, "Mung", !strcmp(ctx->player.race.race_id, "Mung"));
+    charcreate_drawbox(&mungbox, ctx, "Mung", !strcmp(ctx->player.race.race_id, "Mung"));
 
     Rectangle halfbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 5, 180, 60};
-    charcreate_drawbox(halfbox, ctx, "Half", !strcmp(ctx->player.race.race_id, "Half"));
+    charcreate_drawbox(&halfbox, ctx, "Half", !strcmp(ctx->player.race.race_id, "Half"));
 
     Rectangle raceconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 105, 180, 30};
-    charcreate_drawconfirmbox(raceconfirmbox, ctx);
+    charcreate_drawconfirmbox(&raceconfirmbox, ctx);
 
     if (CheckCollisionPointRec(GetMousePosition(), alfbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 2) {
@@ -218,20 +218,20 @@ void charcreate_handle(GameContext* ctx) {
     charcreate_drawboxbackground(ctx, "Choose role:", 200, 290);
     Rectangle gruntbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 135, 180, 60};
-    charcreate_drawbox(gruntbox, ctx, "Grunt", !strcmp(ctx->player.role.role_id, "Grunt"));
+    charcreate_drawbox(&gruntbox, ctx, "Grunt", !strcmp(ctx->player.role.role_id, "Grunt"));
 
     Rectangle thaumaturgebox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 65, 180, 60};
     charcreate_drawbox(
-        thaumaturgebox, ctx, "Theurgist", !strcmp(ctx->player.role.role_id, "Theurgist"));
+        &thaumaturgebox, ctx, "Theurgist", !strcmp(ctx->player.role.role_id, "Theurgist"));
 
     Rectangle burglarbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 5, 180, 60};
-    charcreate_drawbox(burglarbox, ctx, "Burglar", !strcmp(ctx->player.role.role_id, "Burglar"));
+    charcreate_drawbox(&burglarbox, ctx, "Burglar", !strcmp(ctx->player.role.role_id, "Burglar"));
 
     Rectangle roleconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 105, 180, 30};
-    charcreate_drawconfirmbox(roleconfirmbox, ctx);
+    charcreate_drawconfirmbox(&roleconfirmbox, ctx);
 
     if (CheckCollisionPointRec(GetMousePosition(), gruntbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 3) {
@@ -259,19 +259,19 @@ void charcreate_handle(GameContext* ctx) {
     charcreate_drawboxbackground(ctx, "Choose background:", 200, 290);
     Rectangle bg1box = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 135, 180, 60};
-    charcreate_drawbox(bg1box, ctx, "Bg1", !strcmp(ctx->player.background, "Bg1"));
+    charcreate_drawbox(&bg1box, ctx, "Bg1", !strcmp(ctx->player.background, "Bg1"));
 
     Rectangle bg2box = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 65, 180, 60};
-    charcreate_drawbox(bg2box, ctx, "Bg2", !strcmp(ctx->player.background, "Bg2"));
+    charcreate_drawbox(&bg2box, ctx, "Bg2", !strcmp(ctx->player.background, "Bg2"));
 
     Rectangle bg3box = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 5, 180, 60};
-    charcreate_drawbox(bg3box, ctx, "Bg3", !strcmp(ctx->player.background, "Bg3"));
+    charcreate_drawbox(&bg3box, ctx, "Bg3", !strcmp(ctx->player.background, "Bg3"));
 
     Rectangle backgroundconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 105, 180, 30};
-    charcreate_drawconfirmbox(backgroundconfirmbox, ctx);
+    charcreate_drawconfirmbox(&backgroundconfirmbox, ctx);
 
     if (CheckCollisionPointRec(GetMousePosition(), bg1box) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 4) {
@@ -298,19 +298,19 @@ void charcreate_handle(GameContext* ctx) {
     charcreate_drawboxbackground(ctx, "Choose layer:", 200, 290);
     Rectangle layer1box = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 135, 180, 60};
-    charcreate_drawbox(layer1box, ctx, "Layer1", !strcmp(ctx->player.layer, "Layer1"));
+    charcreate_drawbox(&layer1box, ctx, "Layer1", !strcmp(ctx->player.layer, "Layer1"));
 
     Rectangle layer2box = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 65, 180, 60};
-    charcreate_drawbox(layer2box, ctx, "Layer2", !strcmp(ctx->player.layer, "Layer2"));
+    charcreate_drawbox(&layer2box, ctx, "Layer2", !strcmp(ctx->player.layer, "Layer2"));
 
     Rectangle layer3box = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 5, 180, 60};
-    charcreate_drawbox(layer3box, ctx, "Layer3", !strcmp(ctx->player.layer, "Layer3"));
+    charcreate_drawbox(&layer3box, ctx, "Layer3", !strcmp(ctx->player.layer, "Layer3"));
 
     Rectangle layerconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 105, 180, 30};
-    charcreate_drawconfirmbox(layerconfirmbox, ctx);
+    charcreate_drawconfirmbox(&layerconfirmbox, ctx);
 
     if (CheckCollisionPointRec(GetMousePosition(), layer1box) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 5) {
@@ -349,7 +349,7 @@ void charcreate_handle(GameContext* ctx) {
 
     Rectangle summaryconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 105, 180, 30};
-    charcreate_drawconfirmbox(summaryconfirmbox, ctx);
+    charcreate_drawconfirmbox(&summaryconfirmbox, ctx);
 
     if (CheckCollisionPointRec(GetMousePosition(), summaryconfirmbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 6) {

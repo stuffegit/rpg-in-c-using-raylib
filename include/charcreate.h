@@ -4,13 +4,13 @@
 #include "game.h"
 #include <raylib.h>
 
-void charcreate_printdebuginfo(GameContext* ctx);
+void charcreate_printdebuginfo(player_t* player, Font* nfont);
 
-void charcreate_drawbox(Rectangle box, GameContext* ctx, const char* label, bool selected);
+void charcreate_drawbox(Rectangle* box, GameContext* ctx, const char* label, bool selected);
 
 void charcreate_drawboxbackground(GameContext* ctx, char* title, int width, int height);
 
-void charcreate_drawconfirmbox(GameContext* ctx);
+void charcreate_drawconfirmbox(Rectangle* box, GameContext* ctx);
 
 void charcreate_capitalizeplayername(player_t* player);
 
