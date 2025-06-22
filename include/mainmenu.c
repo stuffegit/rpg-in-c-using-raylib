@@ -1,7 +1,7 @@
 #include "game.h"
 #include <stdio.h>
 
-const char* menu_strings[3] = {"Start Game", "Config", "Quit"};
+const char* menu_strings[3] = {"Start Game", "Combat Debug", "Quit"};
 Rectangle menu_item[3];
 
 void game_mainmenu_printdebuginfo(const GameContext* ctx) {
@@ -16,7 +16,7 @@ void game_mainmenu_printdebuginfo(const GameContext* ctx) {
     DrawText("Gamestate: START", (ctx->setting.resolution.x / 2) - 100, 0, 20, WHITE);
     break;
   case 3:
-    DrawText("Gamestate: CONFIG", (ctx->setting.resolution.x / 2) - 100, 0, 20, WHITE);
+    DrawText("Gamestate: COMBAT", (ctx->setting.resolution.x / 2) - 100, 0, 20, WHITE);
     break;
   }
 }
@@ -44,8 +44,8 @@ void game_mainmenu_handle(GameContext* ctx) {
   }
   if (CheckCollisionPointRec(GetMousePosition(), menu_item[1]) &&
       IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ctx->state == STATE_MAINMENU) {
-    // ctx->state = MAINMENU_CONFIG;
-    // TODO: Currently just softlocks player
+    player_init(&ctx->player);
+    ctx->state = STATE_COMBAT;
   }
   if (CheckCollisionPointRec(GetMousePosition(), menu_item[0]) &&
       IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ctx->state == STATE_MAINMENU) {

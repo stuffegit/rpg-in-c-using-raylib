@@ -12,6 +12,7 @@ typedef enum {
   STATE_MAINMENU,
   STATE_SETTINGS,
   STATE_GAME,
+  STATE_COMBAT,
   STATE_CHARCREATE,
 } GameState;
 
@@ -20,14 +21,53 @@ typedef struct iVec2 {
   int y;
 } iVec2;
 
+typedef struct fVec2 {
+  float x;
+  float y;
+} fVec2;
+
 typedef struct Settings {
   iVec2 resolution;
   Font nfont;
 } Settings;
 
-typedef struct {
+typedef struct CombatMenu {
+  struct Selection {
+    int x;
+    int y;
+    int width;
+    int height;
+    int offset;
+  } Selection;
+  struct Initiativebar {
+    int x;
+    int y;
+    int width;
+    int height;
+    int offset;
+  } Initiativebar;
+  struct Statusbars {
+    int x;
+    int y;
+    int width;
+    int height;
+    int offset;
+  } Statusbars;
+  int x;
+  int y;
+  int width;
+  int height;
+} CombatMenu;
+
+typedef struct Enemy {
+  Vector2 pos;
+} Enemy;
+
+typedef struct GameContext {
   GameState state;
-  player_t player;
+  Player player;
+  Enemy enemy;
+  CombatMenu combatmenu;
   Settings setting;
 } GameContext;
 

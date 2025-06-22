@@ -16,7 +16,7 @@ int role_selected = 0;
 int background_selected = 0;
 int layer_selected = 0;
 
-void charcreate_printdebuginfo(player_t* player, Font* nfont) {
+void charcreate_printdebuginfo(Player* player, Font* nfont) {
   DrawTextEx(*nfont, TextFormat("Nam: %s", player->name), (Vector2){0, 1}, 32, 1, WHITE);
   DrawTextEx(*nfont, TextFormat("Gen: %c", player->gender), (Vector2){0, 31}, 32, 1, WHITE);
   DrawTextEx(*nfont, TextFormat("Rce: %s", player->race.race_id), (Vector2){0, 61}, 32, 1, WHITE);
@@ -77,7 +77,7 @@ void charcreate_drawconfirmbox(Rectangle* box, GameContext* ctx) {
       (Vector2){(ctx->setting.resolution.x / 2) - confirmsize.x / 2, box->y}, 32, 1, WHITE);
 }
 
-void charcreate_capitalizeplayername(player_t* player) {
+void charcreate_capitalizeplayername(Player* player) {
   for (int i = 0; i < letter_count; i++) {
     player->name[i] = tolower(player->name[i]);
   }
@@ -119,7 +119,7 @@ void charcreate_handle(GameContext* ctx) {
     if (CheckCollisionPointRec(GetMousePosition(), nameconfirmbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 0) {
       if (name[0] == '\0') {
-        strcpy(ctx->player.name, "UNNAMED");
+        strcpy(ctx->player.name, "Unnamed");
       } else {
         strcpy(ctx->player.name, name);
         charcreate_capitalizeplayername(&ctx->player);
@@ -339,13 +339,15 @@ void charcreate_handle(GameContext* ctx) {
         (ctx->setting.resolution.x / 2.0f) - 190, (ctx->setting.resolution.y / 2.0f) - 135, 380,
         230};
     DrawRectangleRec(summarybox, CLITERAL(Color){15, 59, 58, 255});
-    DrawText(
+    DrawTextEx(
+        ctx->setting.nfont,
         TextFormat(
-            "You are %s.\nA %s from %s\nworking as a %s for\nthe %s layer.", ctx->player.name,
+            "You are %s.\nA %s from %s\nworking as a %s\n for the %s layer.", ctx->player.name,
             (ctx->player.gender == 'M') ? "man" : "woman", ctx->player.background,
             ctx->player.role.role_id, ctx->player.layer),
-        (int)(ctx->setting.resolution.x / 2.0f) - 180, (int)(ctx->setting.resolution.y / 2.0f) - 85,
-        32, WHITE);
+        (Vector2){((float)ctx->setting.resolution.x / 2.0f) - 180,
+                  ((float)ctx->setting.resolution.y / 2.0f) - 85},
+        32, 1, WHITE);
 
     Rectangle summaryconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 105, 180, 30};

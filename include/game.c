@@ -1,6 +1,7 @@
 #include "game.h"
 #include "charcreate.h"
 #include "player.h"
+#include "combat.h"
 #include "map.h"
 #include "stdio.h"
 
@@ -12,7 +13,7 @@ void game_init(GameContext* ctx) {
   SetConfigFlags(FLAG_WINDOW_HIGHDPI);
   InitWindow(ctx->setting.resolution.x, ctx->setting.resolution.y, "videogame playing for fun");
   game_setting_fontinit(&ctx->setting);
-  SetTargetFPS(144);
+  SetTargetFPS(60);
   ctx->player.playerpos = (Vector2){2, 2};
 }
 
@@ -30,6 +31,9 @@ void game_update(GameContext* ctx) {
     break;
   case STATE_GAME:
     game_handle(ctx);
+    break;
+  case STATE_COMBAT:
+    combat_handle(ctx);
     break;
   case STATE_SETTINGS:
     game_setting_handle(&ctx->setting);
@@ -64,8 +68,14 @@ void game_printdebuginfo(GameContext* ctx) {
 }
 
 void game_handle(GameContext* ctx) {
+  if (IsKeyPressed(KEY_E) && ctx->player.playerpos.x == ctx->enemy.pos.x &&
+      ctx->player.playerpos.y == ctx->enemy.pos.y) {
+    printf("should start combat\n");
+    ctx->state = STATE_COMBAT;
+  }
   if (IsKeyPressed(KEY_W)) {
     printf("Player pos b4: %f : %f\n", ctx->player.playerpos.y, ctx->player.playerpos.x);
+    printf("Enemy pos b4: %f : %f\n", ctx->player.playerpos.y, ctx->player.playerpos.x);
     if (ctx->player.playerpos.y >= 2) {
       ctx->player.playerpos.y -= 1.0f;
     }
