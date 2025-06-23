@@ -40,8 +40,8 @@ void map_testdraw(GameContext* ctx) {
       } else if (debugtestmap_grid[i][j] == '@') {
         tilecolor = GREEN;
         enemy = 1;
-        ctx->enemy.pos.y = i;
-        ctx->enemy.pos.x = j;
+        ctx->enemy.pos.y = (float)i;
+        ctx->enemy.pos.x = (float)j;
       }
       if (enemy) {
         DrawRectangle(
@@ -50,10 +50,10 @@ void map_testdraw(GameContext* ctx) {
             TILESIZE, TILESIZE, tilecolor);
         DrawTextEx(
             ctx->setting.nfont, "E",
-            (Vector2){j * OFFSET +
-                          (((ctx->setting.resolution.x / 2) - ((int)mapsize.x / 2)) + j * TILESIZE),
-                      i * OFFSET + (((ctx->setting.resolution.y / 2) - ((int)mapsize.y / 2)) +
-                                    i * TILESIZE)},
+            (Vector2){(float)(j * OFFSET + (((ctx->setting.resolution.x / 2) - (mapsize.x / 2)) +
+                                            (j * TILESIZE))),
+                      (float)(i * OFFSET + (((ctx->setting.resolution.y / 2) - (mapsize.y / 2)) +
+                                            (i * TILESIZE)))},
             TILESIZE, 1, BLACK);
         enemy = 0;
       } else {

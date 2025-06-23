@@ -16,58 +16,56 @@ typedef enum {
   STATE_CHARCREATE,
 } GameState;
 
-typedef struct iVec2 {
+typedef enum {
+  COMBAT_NON,
+  COMBAT_START,
+  COMBAT_FIRSTTURN,
+  COMBAT_ABT,
+  COMBAT_TURN,
+} CombatState;
+
+typedef struct {
   int x;
   int y;
 } iVec2;
 
-typedef struct fVec2 {
+typedef struct {
   float x;
   float y;
 } fVec2;
 
-typedef struct Settings {
+typedef struct {
   iVec2 resolution;
   Font nfont;
 } Settings;
 
-typedef struct CombatMenu {
-  struct Selection {
-    int x;
-    int y;
-    int width;
-    int height;
-    int offset;
-  } Selection;
-  struct Initiativebar {
-    int x;
-    int y;
-    int width;
-    int height;
-    int offset;
-  } Initiativebar;
-  struct Statusbars {
-    int x;
-    int y;
-    int width;
-    int height;
-    int offset;
-  } Statusbars;
+typedef struct {
   int x;
   int y;
   int width;
   int height;
+  int offset;
 } CombatMenu;
 
-typedef struct Enemy {
+typedef struct {
+  struct {
+    CombatMenu background;
+    CombatMenu selection;
+    CombatMenu initiativebars;
+    CombatMenu statusbars;
+  } menu;
+  CombatState state;
+} Combat;
+
+typedef struct {
   Vector2 pos;
 } Enemy;
 
-typedef struct GameContext {
+typedef struct {
   GameState state;
   Player player;
   Enemy enemy;
-  CombatMenu combatmenu;
+  Combat combat;
   Settings setting;
 } GameContext;
 

@@ -10,6 +10,7 @@ void game_init(GameContext* ctx) {
   player_init(&ctx->player);
   game_setting_init(&ctx->setting);
   ctx->state = STATE_MAINMENU;
+  ctx->combat.state = COMBAT_NON;
   SetConfigFlags(FLAG_WINDOW_HIGHDPI);
   InitWindow(ctx->setting.resolution.x, ctx->setting.resolution.y, "videogame playing for fun");
   game_setting_fontinit(&ctx->setting);

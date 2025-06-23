@@ -7,22 +7,26 @@ void combat_printdebuginfo(Player* player, Font* nfont);
 
 void combat_drawboxbackground(GameContext* ctx, int width, int height);
 
-void combat_init(GameContext* ctx);
+void combat_init(
+    GameContext* ctx, Rectangle* background, Rectangle* selection, Rectangle* initiativebars,
+    Rectangle* statusbars);
 
 void combat_update(GameContext* ctx);
 
-void combat_drawmenu(
-    GameContext* ctx, Rectangle* menu_background, Rectangle* menu_selection,
-    Rectangle* menu_initiativebars, Rectangle* menu_statusbars);
+void combat_draw(
+    GameContext* ctx, Rectangle* background, Rectangle* selection, Rectangle* initiativebars,
+    Rectangle* statusbars);
 
-void combat_drawmenu_selection(
-    GameContext* ctx, Rectangle* menu_background, Rectangle* menu_selection);
+void combat_drawmenu(
+    GameContext* ctx, Rectangle* background, Rectangle* selection, Rectangle* initiativebars,
+    Rectangle* statusbars);
+
+void combat_drawmenu_selection(GameContext* ctx, Rectangle* background, Rectangle* selection);
 
 void combat_drawmenu_initiativebars(
-    GameContext* ctx, Rectangle* menu_background, Rectangle* menu_initiativebars);
+    GameContext* ctx, Rectangle* background, Rectangle* initiativebars);
 
-void combat_drawmenu_statusbars(
-    GameContext* ctx, Rectangle* menu_background, Rectangle* menu_statusbars);
+void combat_drawmenu_statusbars(GameContext* ctx, Rectangle* background, Rectangle* statusbars);
 
 void combat_handle(GameContext* ctx);
 
