@@ -40,8 +40,6 @@ void map_testdraw(GameContext* ctx) {
       } else if (debugtestmap_grid[i][j] == '@') {
         tilecolor = GREEN;
         enemy = 1;
-        ctx->enemy.pos.y = (float)i;
-        ctx->enemy.pos.x = (float)j;
       }
       if (enemy) {
         DrawRectangle(

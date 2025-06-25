@@ -1,7 +1,7 @@
 #include "player.h"
 
 void player_init(Player* player) {
-  player->level = 0;
+  player->level = 1;
   strcpy(player->name, "Knivkarl");
   player->gender = 'M';
   strcpy(player->role.role_id, "Burglar");

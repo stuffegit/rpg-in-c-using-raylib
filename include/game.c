@@ -1,6 +1,7 @@
 #include "game.h"
 #include "charcreate.h"
 #include "player.h"
+#include "enemy.h"
 #include "combat.h"
 #include "map.h"
 #include "stdio.h"
@@ -8,6 +9,7 @@
 void game_init(GameContext* ctx) {
   InitAudioDevice();
   player_init(&ctx->player);
+  enemy_init(&ctx->enemy);
   game_setting_init(&ctx->setting);
   ctx->state = STATE_MAINMENU;
   ctx->combat.state = COMBAT_NON;
@@ -69,11 +71,6 @@ void game_printdebuginfo(GameContext* ctx) {
 }
 
 void game_handle(GameContext* ctx) {
-  if (IsKeyPressed(KEY_E) && ctx->player.playerpos.x == ctx->enemy.pos.x &&
-      ctx->player.playerpos.y == ctx->enemy.pos.y) {
-    printf("should start combat\n");
-    ctx->state = STATE_COMBAT;
-  }
   if (IsKeyPressed(KEY_W)) {
     printf("Player pos b4: %f : %f\n", ctx->player.playerpos.y, ctx->player.playerpos.x);
     printf("Enemy pos b4: %f : %f\n", ctx->player.playerpos.y, ctx->player.playerpos.x);
@@ -99,9 +96,7 @@ void game_handle(GameContext* ctx) {
       ctx->player.playerpos.x += 1.0f;
     }
   }
-  DrawRectangle(
-      0, 0, (int)ctx->setting.resolution.x, (int)ctx->setting.resolution.y,
-      CLITERAL(Color){15, 59, 58, 255});
+  DrawRectangle(0, 0, ctx->setting.resolution.x, ctx->setting.resolution.y, BACKGROUNDCOLOR);
   map_testdraw(ctx);
   game_printdebuginfo(ctx);
 }
