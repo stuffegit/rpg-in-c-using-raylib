@@ -1,5 +1,7 @@
 #include "combat.h"
-#include "stdio.h"
+#include "player.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 void timer_start(CombatTimer* timer, double timelife) {
@@ -15,13 +17,23 @@ double timer_elapsed(CombatTimer* timer) {
   return GetTime() - timer->timestart;
 }
 
+void combat_debugenemy(Enemy* enemy) {
+  enemy->level = 1;
+  enemy->hp = 20;
+  enemy->hpmax = 200;
+  enemy->attack = 5;
+  enemy->power = 3;
+  enemy->defense = 2;
+  enemy->durability = 1;
+}
+
 void combat_printdebuginfo(Player* player, Font* nfont) {
   DrawTextEx(
       *nfont,
       TextFormat(
           "Nam: %s\nGen: %c\nRce: %s\nRol: %s\nBgd: %s\nLyr: %s\n\nBdy: %d\nDex: %d\nFtg: %d\n"
           "Con: %d\n\nH|P: %d/%d\nM|P: %d/%d\nAtk: %d\nPwr: %d\nDef: %d\nDur: %d\n",
-          player->name, player->gender, player->race.race_id, player->role.role_id,
+          player->name, player->gender, player->origin.origin_id, player->role.role_id,
           player->background, player->layer, player->body, player->dexterity, player->fatigue,
           player->connection, player->hp, player->hpmax, player->mp, player->mpmax, player->attack,
           player->power, player->defense, player->durability),
@@ -77,17 +89,17 @@ void combat_init(
   statusbars->height = (float)ctx->combat.menu.statusbars.height;
 
   for (int i = 0; i < 4; i++) {
-    ctx->combat.menu.choices[i].x = (int)selection->x + 5;
-    ctx->combat.menu.choices[i].y = ((int)selection->y + 5) + i * 71;
-    ctx->combat.menu.choices[i].width = (int)selection->width - 10;
-    ctx->combat.menu.choices[i].height = 66;
+    ctx->combat.menu.choices[i].x = selection->x + 5.0f;
+    ctx->combat.menu.choices[i].y = selection->y + 5.0f + (float)i * 71.0f;
+    ctx->combat.menu.choices[i].width = selection->width - 10.0f;
+    ctx->combat.menu.choices[i].height = 66.0f;
   }
-
+  player_updatestats(&ctx->player);
   ctx->combat.state = COMBAT_PLAYERTURNSTART;
 }
 
 void combat_update(GameContext* ctx) {
-  ; // i guess numbers and shit go here
+  player_updatestats(&ctx->player);
 }
 
 static void combat_draw(
@@ -127,44 +139,86 @@ void combat_drawmenu_initiativebars(
 void combat_drawmenu_statusbars(GameContext* ctx, Rectangle* background, Rectangle* statusbars) {
   DrawRectangleRec(*statusbars, CLITERAL(Color){0, 0, 0, 100});
   const char* statusbartext = TextFormat(
-      "%s\nHP: %d/%d\nMP: %d/%d", ctx->player.name, ctx->player.hp, ctx->player.hpmax,
+      "%s \nhp%d/%d \n\nmp%d/%d", ctx->player.name, ctx->player.hp, ctx->player.hpmax,
       ctx->player.mp, ctx->player.mpmax);
-  Vector2 textoffset = MeasureTextEx(ctx->setting.nfont, statusbartext, 32, 1);
-  Vector2 textpos =
-      (Vector2){statusbars->x + (statusbars->width / 2) - textoffset.x / 2, statusbars->y + 25};
+  Vector2 textpos = (Vector2){statusbars->x + (statusbars->width / 2) - 200, statusbars->y + 25};
+  float hpbarlength =
+      (((statusbars->width / 2.0f) + 90.0f) / (float)ctx->player.hpmax) * (float)ctx->player.hp;
+  float mpbarlength =
+      (((statusbars->width / 2.0f) + 90.0f) / (float)ctx->player.mpmax) * (float)ctx->player.mp;
   DrawTextEx(ctx->setting.nfont, statusbartext, textpos, 32, 1, WHITE);
+  DrawRectangle(
+      statusbars->x + (statusbars->width / 2) - 200, statusbars->y + 95,
+      (statusbars->width / 2) + 100, 25, CLITERAL(Color){255, 5, 5, 255});
+  DrawRectangle(
+      5 + statusbars->x + (statusbars->width / 2) - 200, statusbars->y + 100, (int)hpbarlength, 15,
+      CLITERAL(Color){255, 255, 255, 255});
+  DrawRectangle(
+      statusbars->x + (statusbars->width / 2) - 200, statusbars->y + 160,
+      (statusbars->width / 2) + 100, 25, CLITERAL(Color){255, 5, 5, 255});
+  DrawRectangle(
+      5 + statusbars->x + (statusbars->width / 2) - 200, statusbars->y + 165, (int)mpbarlength, 15,
+      CLITERAL(Color){255, 255, 255, 255});
 }
 
 void combat_player_damage(GameContext* ctx, Player* player, Enemy* enemy) {
-  if (1 + ((rand() % (player->attack + 2)) + player->attack - 2) >= 10) {
+  printf("\n-- PLAYER TURN START --");
+  printf(
+      "\n%s attacks: %d-%d vs %s's defense %d -> ", player->name, player->level, player->attack,
+      enemy->name, enemy->defense);
+  int atkroll = player->level + rand() % player->attack;
+  if (atkroll >= enemy->defense || atkroll == player->attack) {
+    printf("%d hits!\n", atkroll);
     int dmgdone = 0;
     int dmgtaken = 0;
+    printf("%s rolls damage %dd%d -> ", player->name, player->level, player->power);
     dmgdone = 1 + rand() % player->power;
-    dmgtaken = dmgdone - enemy->durability;
-    printf("\nPlayer rolls %dd%d.\n", player->level, player->attack);
-    printf("It lands on %d.\n", dmgdone);
-    printf(
-        "Enemy %s takes %d damage reducing their hp from %d to %d.\n", enemy->name, dmgtaken,
-        enemy->hp, enemy->hp - dmgtaken);
-    enemy->hp -= dmgdone;
-    timer_start(&ctx->combat.timer, 2.0);
+    printf("%d damage.\n", dmgdone);
+    if (dmgdone > enemy->durability) {
+      dmgtaken = dmgdone - enemy->durability;
+      printf(
+          "%s takes %d damage reducing their hp from %d to %d.\n", enemy->name, dmgtaken, enemy->hp,
+          enemy->hp - dmgtaken);
+      enemy->hp -= dmgtaken;
+    } else {
+      printf("%s takes no damage.\n", enemy->name);
+    }
+  } else {
+    printf("%d miss..\n", atkroll);
   }
+  timer_start(&ctx->combat.timer, 2.0);
+  printf("-- PLAYER TURN END --\n");
 }
 
 void combat_enemy_damage(GameContext* ctx, Enemy* enemy, Player* player) {
-  if (1 + ((rand() % (enemy->attack + 2)) + enemy->attack - 2) >= 10) {
+  printf("\n-- ENEMY TURN START --\n");
+  printf(
+      "%s attacks %d-%d vs %s's defense %d -> ", enemy->name, enemy->level, enemy->attack,
+      player->name, player->defense);
+  int atkroll = enemy->level + rand() % (enemy->attack);
+  if (atkroll >= player->defense || atkroll == enemy->attack) {
+    printf("%d hits!\n", atkroll);
     int dmgdone = 0;
     int dmgtaken = 0;
-    dmgdone = 1 + rand() % enemy->power;
-    dmgtaken = dmgdone - player->durability;
-    printf("\nEnemy rolls %dd%d.\n", enemy->level, enemy->attack);
-    printf("It lands on %d.\n", dmgdone);
     printf(
-        "Player %s takes %d damage reducing their hp from %d to %d.\n", player->name, dmgtaken,
-        player->hp, player->hp - dmgtaken);
-    player->hp -= dmgdone;
-    timer_start(&ctx->combat.timer, 2.0);
+        "%s rolls damage %d-%d vs %s's durability %d -> ", enemy->name, enemy->level, enemy->power,
+        player->name, player->durability);
+    dmgdone = enemy->level + rand() % enemy->power;
+    printf("%d damage.\n", dmgdone);
+    if (dmgdone > player->durability) {
+      dmgtaken = dmgdone - player->durability;
+      printf(
+          "%s takes %d damage reducing their hp from %d to %d.\n", player->name, dmgtaken,
+          player->hp, player->hp - dmgtaken);
+      player->hp -= dmgtaken;
+    } else {
+      printf("%s takes no damage.\n", player->name);
+    }
+  } else {
+    printf("%d miss..\n", atkroll);
   }
+  timer_start(&ctx->combat.timer, 2.0);
+  printf("-- ENEMY TURN END --\n");
 }
 
 void combat_handle(GameContext* ctx) {
@@ -180,6 +234,7 @@ void combat_handle(GameContext* ctx) {
     combat_init(
         ctx, &combatmenu_background, &combatmenu_selection, &combatmenu_initiativebars,
         &combatmenu_statusbars);
+    combat_debugenemy(&ctx->enemy);
     break;
   case COMBAT_PLAYERTURNSTART:
     // Handle the player turn

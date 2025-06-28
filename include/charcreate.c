@@ -1,7 +1,7 @@
 ﻿#include "charcreate.h"
 #include "player.h"
 #include "role.h"
-#include "race.h"
+#include "origin.h"
 #include "game.h"
 #include <ctype.h>
 #include <string.h>
@@ -11,15 +11,17 @@ int ccstep = 0;
 char name[PLAYER_MAXNAMELEN + 1] = "\0";
 int letter_count = 0;
 int gender_selected = 0;
-int race_selected = 0;
+int origin_selected = 0;
 int role_selected = 0;
 int background_selected = 0;
 int layer_selected = 0;
 
 void charcreate_printdebuginfo(Player* player, Font* nfont) {
+  player_updatestats(player);
   DrawTextEx(*nfont, TextFormat("Nam: %s", player->name), (Vector2){0, 1}, 32, 1, WHITE);
   DrawTextEx(*nfont, TextFormat("Gen: %c", player->gender), (Vector2){0, 31}, 32, 1, WHITE);
-  DrawTextEx(*nfont, TextFormat("Rce: %s", player->race.race_id), (Vector2){0, 61}, 32, 1, WHITE);
+  DrawTextEx(
+      *nfont, TextFormat("Ori: %s", player->origin.origin_id), (Vector2){0, 61}, 32, 1, WHITE);
   DrawTextEx(*nfont, TextFormat("Rol: %s", player->role.role_id), (Vector2){0, 91}, 32, 1, WHITE);
   DrawTextEx(*nfont, TextFormat("Bgd: %s", player->background), (Vector2){0, 121}, 32, 1, WHITE);
   DrawTextEx(*nfont, TextFormat("Lyr: %s", player->layer), (Vector2){0, 151}, 32, 1, WHITE);
@@ -175,41 +177,41 @@ void charcreate_handle(GameContext* ctx) {
     }
     break;
   case 2:
-    // Race
-    charcreate_drawboxbackground(ctx, "Choose race:", 200, 290);
+    // Origin
+    charcreate_drawboxbackground(ctx, "Choose origin:", 200, 290);
     Rectangle alfbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 135, 180, 60};
-    charcreate_drawbox(&alfbox, ctx, "Alf", !strcmp(ctx->player.race.race_id, "Alf"));
+    charcreate_drawbox(&alfbox, ctx, "Alf", !strcmp(ctx->player.origin.origin_id, "Alf"));
 
     Rectangle mungbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) - 65, 180, 60};
-    charcreate_drawbox(&mungbox, ctx, "Mung", !strcmp(ctx->player.race.race_id, "Mung"));
+    charcreate_drawbox(&mungbox, ctx, "Mung", !strcmp(ctx->player.origin.origin_id, "Mung"));
 
     Rectangle halfbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 5, 180, 60};
-    charcreate_drawbox(&halfbox, ctx, "Half", !strcmp(ctx->player.race.race_id, "Half"));
+    charcreate_drawbox(&halfbox, ctx, "Half", !strcmp(ctx->player.origin.origin_id, "Half"));
 
-    Rectangle raceconfirmbox = {
+    Rectangle originconfirmbox = {
         (ctx->setting.resolution.x / 2.0f) - 90, (ctx->setting.resolution.y / 2.0f) + 105, 180, 30};
-    charcreate_drawconfirmbox(&raceconfirmbox, ctx);
+    charcreate_drawconfirmbox(&originconfirmbox, ctx);
 
     if (CheckCollisionPointRec(GetMousePosition(), alfbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 2) {
-      race_selected = 1;
-      ctx->player.race = race_select(1);
+      origin_selected = 1;
+      ctx->player.origin = origin_select(1);
     }
     if (CheckCollisionPointRec(GetMousePosition(), mungbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 2) {
-      race_selected = 1;
-      ctx->player.race = race_select(2);
+      origin_selected = 1;
+      ctx->player.origin = origin_select(2);
     }
     if (CheckCollisionPointRec(GetMousePosition(), halfbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 2) {
-      race_selected = 1;
-      ctx->player.race = race_select(3);
+      origin_selected = 1;
+      ctx->player.origin = origin_select(3);
     }
-    if (CheckCollisionPointRec(GetMousePosition(), raceconfirmbox) &&
-        IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 2 && race_selected == 1) {
+    if (CheckCollisionPointRec(GetMousePosition(), originconfirmbox) &&
+        IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 2 && origin_selected == 1) {
       ccstep++;
     }
     break;
@@ -355,7 +357,10 @@ void charcreate_handle(GameContext* ctx) {
 
     if (CheckCollisionPointRec(GetMousePosition(), summaryconfirmbox) &&
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 6) {
-      ctx->state = STATE_GAME;
+      ctx->player.hp = ctx->player.hpmax;
+      ctx->player.mp = ctx->player.mpmax;
+      ctx->state = STATE_COMBAT;
+      ctx->combat.state = COMBAT_START;
     }
     break;
   }

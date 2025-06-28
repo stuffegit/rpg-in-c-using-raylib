@@ -50,13 +50,6 @@ void game_mainmenu_handle(GameContext* ctx) {
     ctx->player.hpmax = 100;
     ctx->player.attack = 10;
     ctx->player.power = 6;
-
-    ctx->enemy.level = 1;
-    ctx->enemy.hp = 100;
-    ctx->enemy.hpmax = 100;
-    ctx->enemy.attack = 10;
-    ctx->enemy.power = 4;
-
     ctx->state = STATE_COMBAT;
     ctx->combat.state = COMBAT_START;
   }

@@ -585,8 +585,8 @@
     <ClInclude Include="..\..\include\enemy.h" />
     <ClInclude Include="..\..\include\game.h" />
     <ClInclude Include="..\..\include\map.h" />
+    <ClInclude Include="..\..\include\origin.h" />
     <ClInclude Include="..\..\include\player.h" />
-    <ClInclude Include="..\..\include\race.h" />
     <ClInclude Include="..\..\include\resource_dir.h" />
     <ClInclude Include="..\..\include\role.h" />
   </ItemGroup>
@@ -597,8 +597,8 @@
     <ClCompile Include="..\..\include\game.c" />
     <ClCompile Include="..\..\include\mainmenu.c" />
     <ClCompile Include="..\..\include\map.c" />
+    <ClCompile Include="..\..\include\origin.c" />
     <ClCompile Include="..\..\include\player.c" />
-    <ClCompile Include="..\..\include\race.c" />
     <ClCompile Include="..\..\include\role.c" />
     <ClCompile Include="..\..\include\setting.c" />
     <ClCompile Include="..\..\src\main.c" />

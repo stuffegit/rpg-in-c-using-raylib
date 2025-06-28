@@ -4,13 +4,13 @@
 #include <raylib.h>
 
 #define ENEMY_MAXNAMELEN 15
-#define ENEMY_MAXRACELEN 15
+#define ENEMY_MAXIDLEN 15
 
 typedef struct {
   // System identifiers
   int level;
   char name[ENEMY_MAXNAMELEN + 1];
-  char race[ENEMY_MAXRACELEN + 1];
+  char origin[ENEMY_MAXIDLEN + 1];
 
   // Primary stats
   int body;

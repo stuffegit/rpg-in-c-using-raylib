@@ -1,8 +1,9 @@
 #include "enemy.h"
+#include "string.h"
 
 void enemy_init(Enemy* enemy) {
   enemy->level = 0;
-  strcpy(enemy->name, "Elakt spökmonster");
+  strcpy(enemy->name, "Spökmonster");
 
   enemy->body = 0;
   enemy->dexterity = 0;

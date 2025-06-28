@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "race.h"
+#include "origin.h"
 #include "role.h"
 #include <raylib.h>
 
@@ -14,7 +14,7 @@ typedef struct {
   int level;
   char name[PLAYER_MAXNAMELEN + 1];
   char gender;
-  race_t race;
+  origin_t origin;
   role_t role;
   char background[PLAYER_MAXIDLEN + 1];
   char layer[PLAYER_MAXIDLEN + 1];
