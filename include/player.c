@@ -72,7 +72,7 @@ void player_updatestats(Player* player) {
   player->hpmax = ((player->body * 2) + (player->fatigue * 3)) / 2;
   player->mpmax = ((player->connection * 2) + (player->fatigue * 1)) / 2;
   player->attack = ((player->dexterity * 2) + (player->body * 1)) / 3;
-  player->power = ((player->dexterity * 1) + (player->body * 3)) / 10;
+  player->power = ((player->dexterity * 1) + (player->body * 3)) / 4;
   player->defense = ((player->body * 2) + (player->dexterity * 3)) / 6;
   player->durability = ((player->body * 5) + (player->dexterity * 1)) / 10;
 }

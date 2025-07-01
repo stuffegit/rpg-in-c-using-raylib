@@ -27,6 +27,11 @@ typedef struct {
   int power;
   int defense;
   int durability;
+
+  // Enemy specific
+  int moneydrop;
+  int xp;
+  int ap;
 } Enemy;
 
 void enemy_init(Enemy* enemy);

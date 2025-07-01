@@ -359,8 +359,7 @@ void charcreate_handle(GameContext* ctx) {
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ccstep == 6) {
       ctx->player.hp = ctx->player.hpmax;
       ctx->player.mp = ctx->player.mpmax;
-      ctx->state = STATE_COMBAT;
-      ctx->combat.state = COMBAT_START;
+      ctx->state = STATE_DEBUG;
     }
     break;
   }

@@ -17,16 +17,6 @@ double timer_elapsed(CombatTimer* timer) {
   return GetTime() - timer->timestart;
 }
 
-void combat_debugenemy(Enemy* enemy) {
-  enemy->level = 1;
-  enemy->hp = 20;
-  enemy->hpmax = 200;
-  enemy->attack = 5;
-  enemy->power = 3;
-  enemy->defense = 2;
-  enemy->durability = 1;
-}
-
 void combat_printdebuginfo(Player* player, Font* nfont) {
   DrawTextEx(
       *nfont,
@@ -196,7 +186,7 @@ void combat_enemy_damage(GameContext* ctx, Enemy* enemy, Player* player) {
       "%s attacks %d-%d vs %s's defense %d -> ", enemy->name, enemy->level, enemy->attack,
       player->name, player->defense);
   int atkroll = enemy->level + rand() % (enemy->attack);
-  if (atkroll >= player->defense || atkroll == enemy->attack) {
+  if (atkroll >= player->defense) {
     printf("%d hits!\n", atkroll);
     int dmgdone = 0;
     int dmgtaken = 0;
@@ -234,7 +224,6 @@ void combat_handle(GameContext* ctx) {
     combat_init(
         ctx, &combatmenu_background, &combatmenu_selection, &combatmenu_initiativebars,
         &combatmenu_statusbars);
-    combat_debugenemy(&ctx->enemy);
     break;
   case COMBAT_PLAYERTURNSTART:
     // Handle the player turn

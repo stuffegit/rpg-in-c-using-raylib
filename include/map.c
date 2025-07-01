@@ -5,18 +5,18 @@
 // clang-format off
 char debugtestmap_grid[MAPHEIGHT][MAPWIDTH] = {
   "####################",
-  "#.........^^^^^^^^^#", 
-  "#.............^^^^^#",
+  "#1234..............#", 
+  "#..................#",
   "#..................#", 
   "#..................#",
-  "#......ttttttt.....#",
-  "#.....tttttttt.....#", 
-  "#.......tttttt.....#",
-  "#.......tttt.......#",
+  "#..................#",
   "#..................#", 
-  "#....@.......~~~...#",
-  "#...........~~~~...#",
-  "#...........~~~~~..#", 
+  "#..................#",
+  "#..................#",
+  "#..................#", 
+  "#..................#",
+  "#..................#",
+  "#..................#", 
   "#..................#",
   "####################"};
 // clang-format on
@@ -24,7 +24,7 @@ char debugtestmap_grid[MAPHEIGHT][MAPWIDTH] = {
 void map_testdraw(GameContext* ctx) {
   Vector2 mapsize = (Vector2){MAPWIDTH * TILESIZE, MAPHEIGHT * TILESIZE};
   Color tilecolor = RED;
-  bool enemy = 0;
+  int enemy = 0;
   for (int i = 0; i < MAPHEIGHT; i++) {
     for (int j = 0; j < MAPWIDTH; j++) {
       if (debugtestmap_grid[i][j] == '#') {
@@ -39,27 +39,23 @@ void map_testdraw(GameContext* ctx) {
         tilecolor = BLUE;
       } else if (debugtestmap_grid[i][j] == '@') {
         tilecolor = GREEN;
+      } else if (debugtestmap_grid[i][j] == '1') {
+        tilecolor = RAYWHITE;
         enemy = 1;
+      } else if (debugtestmap_grid[i][j] == '2') {
+        tilecolor = RAYWHITE;
+        enemy = 2;
+      } else if (debugtestmap_grid[i][j] == '3') {
+        tilecolor = RAYWHITE;
+        enemy = 3;
+      } else if (debugtestmap_grid[i][j] == '4') {
+        tilecolor = RAYWHITE;
+        enemy = 4;
       }
-      if (enemy) {
-        DrawRectangle(
-            j * OFFSET + (((ctx->setting.resolution.x / 2) - ((int)mapsize.x / 2)) + j * TILESIZE),
-            i * OFFSET + (((ctx->setting.resolution.y / 2) - ((int)mapsize.y / 2)) + i * TILESIZE),
-            TILESIZE, TILESIZE, tilecolor);
-        DrawTextEx(
-            ctx->setting.nfont, "E",
-            (Vector2){(float)(j * OFFSET + (((ctx->setting.resolution.x / 2) - (mapsize.x / 2)) +
-                                            (j * TILESIZE))),
-                      (float)(i * OFFSET + (((ctx->setting.resolution.y / 2) - (mapsize.y / 2)) +
-                                            (i * TILESIZE)))},
-            TILESIZE, 1, BLACK);
-        enemy = 0;
-      } else {
-        DrawRectangle(
-            j * OFFSET + (((ctx->setting.resolution.x / 2) - ((int)mapsize.x / 2)) + j * TILESIZE),
-            i * OFFSET + (((ctx->setting.resolution.y / 2) - ((int)mapsize.y / 2)) + i * TILESIZE),
-            TILESIZE, TILESIZE, tilecolor);
-      }
+      DrawRectangle(
+          j * OFFSET + (((ctx->setting.resolution.x / 2) - ((int)mapsize.x / 2)) + j * TILESIZE),
+          i * OFFSET + (((ctx->setting.resolution.y / 2) - ((int)mapsize.y / 2)) + i * TILESIZE),
+          TILESIZE, TILESIZE, tilecolor);
       if (i == ctx->player.playerpos.y && j == ctx->player.playerpos.x) {
         DrawTextEx(
             ctx->setting.nfont, "P",

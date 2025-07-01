@@ -44,14 +44,7 @@ void game_mainmenu_handle(GameContext* ctx) {
   }
   if (CheckCollisionPointRec(GetMousePosition(), menu_item[1]) &&
       IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ctx->state == STATE_MAINMENU) {
-    // Combat debug
-    ctx->player.level = 1;
-    ctx->player.hp = 100;
-    ctx->player.hpmax = 100;
-    ctx->player.attack = 10;
-    ctx->player.power = 6;
-    ctx->state = STATE_COMBAT;
-    ctx->combat.state = COMBAT_START;
+    ;
   }
   if (CheckCollisionPointRec(GetMousePosition(), menu_item[0]) &&
       IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ctx->state == STATE_MAINMENU) {

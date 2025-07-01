@@ -18,6 +18,10 @@ void enemy_init(Enemy* enemy) {
   enemy->power = 0;
   enemy->defense = 0;
   enemy->durability = 0;
+
+  enemy->moneydrop = 0;
+  enemy->xp = 0;
+  enemy->ap = 0;
 }
 
 void enemy_updatestats(Enemy* enemy) {
