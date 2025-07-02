@@ -1,0 +1,19 @@
+{
+	"level": 4,
+    "name": "Chief Goblin",
+    "origin": "Goblin",
+
+    "hp": 100,
+    "hpmax": 100,
+    "mp": 100,
+    "mpmax": 100,
+    "attack": 10,
+    "power": 10,
+    "defense": 10,
+    "durability": 10,
+
+    "moneydrop": 10,
+    "xp": 10,
+    "ap": 10
+
+}

@@ -581,6 +581,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\charcreate.h" />
+    <ClInclude Include="..\..\include\cJSON.h" />
     <ClInclude Include="..\..\include\combat.h" />
     <ClInclude Include="..\..\include\enemy.h" />
     <ClInclude Include="..\..\include\game.h" />
@@ -592,6 +593,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\charcreate.c" />
+    <ClCompile Include="..\..\include\cJSON.c" />
     <ClCompile Include="..\..\include\combat.c" />
     <ClCompile Include="..\..\include\enemy.c" />
     <ClCompile Include="..\..\include\game.c" />

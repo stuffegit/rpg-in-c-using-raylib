@@ -1,0 +1,19 @@
+{
+	"level": 1,
+    "name": "Goblin",
+    "origin": "Goblin",
+
+    "hp": 10,
+    "hpmax": 10,
+    "mp": 10,
+    "mpmax": 10,
+    "attack": 1,
+    "power": 1,
+    "defense": 1,
+    "durability": 1,
+
+    "moneydrop": 1,
+    "xp": 1,
+    "ap": 1
+
+}

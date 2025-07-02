@@ -1,0 +1,19 @@
+{
+	"level": 2,
+    "name": "Big Goblin",
+    "origin": "Goblin",
+
+    "hp": 20,
+    "hpmax": 20,
+    "mp": 20,
+    "mpmax": 20,
+    "attack": 3,
+    "power": 3,
+    "defense": 3,
+    "durability": 3,
+
+    "moneydrop": 2,
+    "xp": 2,
+    "ap": 2
+
+}

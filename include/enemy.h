@@ -12,12 +12,6 @@ typedef struct {
   char name[ENEMY_MAXNAMELEN + 1];
   char origin[ENEMY_MAXIDLEN + 1];
 
-  // Primary stats
-  int body;
-  int dexterity;
-  int fatigue;
-  int connection;
-
   // Secondary stats
   int hp;
   int hpmax;
@@ -36,6 +30,6 @@ typedef struct {
 
 void enemy_init(Enemy* enemy);
 
-void enemy_updatestats(Enemy* enemy);
+void enemy_load_from_json(Enemy* enemy, char* enemybp);
 
 #endif // PLAYER_H

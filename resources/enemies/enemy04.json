@@ -1,0 +1,19 @@
+{
+	"level": 3,
+    "name": "Hob Goblin",
+    "origin": "Goblin",
+
+    "hp": 70,
+    "hpmax": 70,
+    "mp": 70,
+    "mpmax": 70,
+    "attack": 6,
+    "power": 6,
+    "defense": 6,
+    "durability": 6,
+
+    "moneydrop": 6,
+    "xp": 6,
+    "ap": 6
+
+}

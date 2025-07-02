@@ -94,78 +94,21 @@ void game_printdebuginfo(GameContext* ctx) {
 }
 
 void game_handle(GameContext* ctx) {
-
   // Overlap enemy square
   if (ctx->player.playerpos.x == 1 && ctx->player.playerpos.y == 1) {
-    strcpy(ctx->enemy.name, "Level1");
-    ctx->enemy.level = 1;
-    ctx->enemy.attack = 1;
-    ctx->enemy.power = 1;
-    ctx->enemy.defense = 1;
-    ctx->enemy.durability = 1;
-    ctx->enemy.hpmax = 10;
-    ctx->enemy.hp = ctx->enemy.hpmax;
-    ctx->enemy.mpmax = 10;
-    ctx->enemy.mp = ctx->enemy.mpmax;
-
-    ctx->enemy.xp = 1;
-    ctx->enemy.ap = 1;
-    ctx->enemy.moneydrop = 5;
-
+    enemy_load_from_json(&ctx->enemy, "resources/enemies/enemy01.json");
     ctx->state = STATE_COMBAT;
     ctx->combat.state = COMBAT_START;
   } else if (ctx->player.playerpos.x == 2 && ctx->player.playerpos.y == 1) {
-    strcpy(ctx->enemy.name, "Level2");
-    ctx->enemy.level = 2;
-    ctx->enemy.attack = 3;
-    ctx->enemy.power = 3;
-    ctx->enemy.defense = 3;
-    ctx->enemy.durability = 3;
-    ctx->enemy.hpmax = 25;
-    ctx->enemy.hp = ctx->enemy.hpmax;
-    ctx->enemy.mpmax = 25;
-    ctx->enemy.mp = ctx->enemy.mpmax;
-
-    ctx->enemy.xp = 2;
-    ctx->enemy.ap = 2;
-    ctx->enemy.moneydrop = 10;
-
+    enemy_load_from_json(&ctx->enemy, "resources/enemies/enemy02.json");
     ctx->state = STATE_COMBAT;
     ctx->combat.state = COMBAT_START;
   } else if (ctx->player.playerpos.x == 3 && ctx->player.playerpos.y == 1) {
-    strcpy(ctx->enemy.name, "Level3");
-    ctx->enemy.level = 3;
-    ctx->enemy.attack = 5;
-    ctx->enemy.power = 5;
-    ctx->enemy.defense = 5;
-    ctx->enemy.durability = 5;
-    ctx->enemy.hpmax = 50;
-    ctx->enemy.hp = ctx->enemy.hpmax;
-    ctx->enemy.mpmax = 50;
-    ctx->enemy.mp = ctx->enemy.mpmax;
-
-    ctx->enemy.xp = 5;
-    ctx->enemy.ap = 5;
-    ctx->enemy.moneydrop = 15;
-
+    enemy_load_from_json(&ctx->enemy, "resources/enemies/enemy03.json");
     ctx->state = STATE_COMBAT;
     ctx->combat.state = COMBAT_START;
   } else if (ctx->player.playerpos.x == 4 && ctx->player.playerpos.y == 1) {
-    strcpy(ctx->enemy.name, "Level4");
-    ctx->enemy.level = 4;
-    ctx->enemy.attack = 10;
-    ctx->enemy.power = 10;
-    ctx->enemy.defense = 10;
-    ctx->enemy.durability = 10;
-    ctx->enemy.hpmax = 150;
-    ctx->enemy.hp = ctx->enemy.hpmax;
-    ctx->enemy.mpmax = 150;
-    ctx->enemy.mp = ctx->enemy.mpmax;
-
-    ctx->enemy.xp = 10;
-    ctx->enemy.ap = 10;
-    ctx->enemy.moneydrop = 50;
-
+    enemy_load_from_json(&ctx->enemy, "resources/enemies/enemy04.json");
     ctx->state = STATE_COMBAT;
     ctx->combat.state = COMBAT_START;
   }
