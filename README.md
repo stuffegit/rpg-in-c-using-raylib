@@ -15,13 +15,19 @@ Goals:
 <br>
 Misc:<br>
 <br>
+
 Why not C++?
->C++ is a colossus of complexity and I'm barely proficient in C.
+>C++ is a colossus of complexity and I'm barely proficient in C.<br>
 
-OpenGL? Vulkan? D3D?
+OpenGL? Vulkan? D3D?<br>
 >My head starts spinning when I'm just typing out boilerplate that I barely understand. <br>
->Raylib seems like a good and simple starting point.
+>Raylib seems like a good and simple starting point.<br>
 
-Does this build?
+Does this build?<br>
 >It does for me. Probably not for you.<br>
 >I'm using the quickstart thing from: https://github.com/raylib-extras/raylib-quickstart but I excluded most of it with the .gitignore because of the size.
+
+Currently the "combat log" is only in the debug builds cmd. <br>
+I assume it would be fairly simple to have something like:<br>
+char combat_log[4][20]; <br>
+and just overwrite current-log  modulus 4 or something but I felt like moving on to the next project at this point. <br>
